@@ -15,8 +15,8 @@
     -webkit-animation-duration: 10ms;
     animation-duration: 10ms;
     padding: 16.5px 14px;
-    border-left: solid 1px;
-    border-right: solid 1px;
+    border-left: solid 1px #cbcbcb;
+    border-right: solid 1px #cbcbcb;
 }
 #root > div.MuiGrid-root.MuiGrid-container.css-1cxvja2-MuiGrid-root > div > div > form > div:nth-child(3) > div > div{
     height: 3.5rem;

@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import "./ConsumerInitialForm.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import IndicatorProgressBottom from "../../components/indicatorBottom/IndicatorProgressBottom";
 import { devitrackApi } from "../../devitrakApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,7 +42,9 @@ const ConsumerInitialForm = () => {
   });
   const [contactPhoneNumber, setContactPhoneNumber] = useState("");
   const [groupName, setGroupName] = useState("");
-  const { choice, company } = useSelector((state) => state.event);
+  const { choice, company, contactInfo } = useSelector((state) => state.event);
+  const emailSentRef = useRef(false);
+  console.log("🚀 ~ file: ConsumerInitialForm.jsx:47 ~ ConsumerInitialForm ~ emailSentRef:", emailSentRef)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const listOfConsumersQuery = useQuery({
@@ -63,9 +65,29 @@ const ConsumerInitialForm = () => {
       return check;
     };
     checkIfConsumerExists();
-
-    const submitEmailToLoginForExistingConsumer = (data) => {
-      console.log("send email to login", data);
+    const submitEmailToLoginForExistingConsumer = async () => {
+      //!parameters needed:
+      //!consumer.name
+      //!consumer.lastName
+      //!link to contain all consumer info to log in
+      //!contact info.email
+      const parametersNeededToLoginLink = {
+        consumer: checkIfConsumerExists(),
+        link: `http://localhost:3791/authentication?event=${choice.replace(
+          /%20/g,
+          " "
+        )}&company=${company.replace(/%20/g, " ")}&uid=${
+          checkIfConsumerExists().id
+        }`,
+        contactInfo: contactInfo.email,
+      };
+      const respo = await devitrackApi.post(
+        "/nodemailer/login-existing-consumer",
+        parametersNeededToLoginLink
+      );
+      if (respo) {
+        return (emailSentRef.current = true);
+      }
     };
 
     const submitNewConsumerInfo = (data) => {
@@ -113,11 +135,7 @@ const ConsumerInitialForm = () => {
                   alignItems: "center",
                   // textAlign: "left",
                 }}
-                onSubmit={handleSubmit(
-                  checkIfConsumerExists()
-                    ? submitEmailToLoginForExistingConsumer
-                    : submitNewConsumerInfo
-                )}
+                onSubmit={handleSubmit(submitNewConsumerInfo)}
                 className="form"
               >
                 <Grid
@@ -217,6 +235,53 @@ const ConsumerInitialForm = () => {
                     inbox that contains a link for you to log in.
                   </Typography>
                 )}
+                {checkIfConsumerExists() && (
+                  <Grid item xs={12} margin={"1rem 0"}>
+                    <Button
+                      onClick={() => submitEmailToLoginForExistingConsumer()}
+                      style={{
+                        display: "flex",
+                        padding: "12px 20px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: "8px",
+                        alignSelf: "stretch",
+                        borderRadius: "8px",
+                        border: `${
+                          emailSentRef.current === true
+                            ? "1px solid var(--gray-300, #D0D5DD)"
+                            : "1px solid var(--blue-dark-600, #155EEF)"
+                        }`,
+                        background: `${
+                          emailSentRef.current === true
+                            ? "var(--base-white, #FFF)"
+                            : "var(--blue-dark-600, #155EEF)"
+                        }`,
+                        boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                        width: "100%",
+                      }}
+                    >
+                      <Typography
+                        textTransform={"none"}
+                        fontFamily={"Inter"}
+                        fontSize={"16px"}
+                        fontStyle={"normal"}
+                        fontWeight={600}
+                        lineHeight={"24px"}
+                        color={`${
+                          emailSentRef.current === true
+                            ? "var(--gray-700, #344054)"
+                            : "var(--base-white, #FFF)"
+                        }`}
+                      >
+                        {emailSentRef.current === true
+                          ? "Send email again"
+                          : "Send login email"}
+                      </Typography>
+                    </Button>
+                  </Grid>
+                )}
+
                 {!checkIfConsumerExists() && (
                   <>
                     <Grid
@@ -391,40 +456,38 @@ const ConsumerInitialForm = () => {
                         fullWidth
                       />
                     </Grid>
+                    <Grid item xs={12} margin={"1rem 0"}>
+                      <Button
+                        type="submit"
+                        style={{
+                          display: "flex",
+                          padding: "12px 20px",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: "8px",
+                          alignSelf: "stretch",
+                          borderRadius: "8px",
+                          border: "1px solid var(--blue-dark-600, #155EEF)",
+                          background: "var(--blue-dark-600, #155EEF)",
+                          boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+                          width: "100%",
+                        }}
+                      >
+                        <Typography
+                          textTransform={"none"}
+                          fontFamily={"Inter"}
+                          fontSize={"16px"}
+                          fontStyle={"normal"}
+                          fontWeight={600}
+                          lineHeight={"24px"}
+                          color={"var(--base-white, #FFF)"}
+                        >
+                          Continue
+                        </Typography>
+                      </Button>
+                    </Grid>{" "}
                   </>
                 )}
-                <Grid item xs={12} margin={"1rem 0"}>
-                  <Button
-                    type="submit"
-                    style={{
-                      display: "flex",
-                      padding: "12px 20px",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      gap: "8px",
-                      alignSelf: "stretch",
-                      borderRadius: "8px",
-                      border: "1px solid var(--blue-dark-600, #155EEF)",
-                      background: "var(--blue-dark-600, #155EEF)",
-                      boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
-                      width: "100%",
-                    }}
-                  >
-                    <Typography
-                      textTransform={"none"}
-                      fontFamily={"Inter"}
-                      fontSize={"16px"}
-                      fontStyle={"normal"}
-                      fontWeight={600}
-                      lineHeight={"24px"}
-                      color={"var(--base-white, #FFF)"}
-                    >
-                      {!checkIfConsumerExists()
-                        ? "Continue"
-                        : "Send login email"}
-                    </Typography>
-                  </Button>
-                </Grid>
               </form>
             </Grid>{" "}
           </Grid>

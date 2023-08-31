@@ -12,17 +12,18 @@ import {
 import consumerSlide from "./slides/consumerSlide";
 import deviceSlides from "./slides/deviceSlides";
 import eventSlide from "./slides/eventSlide";
+import articleHandlerSlide from "./slides/articleHandlerSlide";
 
 const persistConfig = {
   key: "root",
-  version: 1,
   storage,
 };
 
 const reducers = combineReducers({
   consumer: consumerSlide,
   deviceHandler: deviceSlides,
-  event:eventSlide
+  event:eventSlide,
+  articleHandler: articleHandlerSlide,
 });
 
 const persistedReducers = persistReducer(persistConfig, reducers);

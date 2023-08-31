@@ -26,25 +26,25 @@ const NavigationBottom = () => {
         }}
       >
         <BottomNavigationAction
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate("/device")}
           label="Device"
-          icon={<Icon icon="ph:devices-thin" width="20" height="20" />}
+          icon={<Icon icon="ph:devices-thin" width="30" height="30" />}
         />
         <BottomNavigationAction
-          onClick={() => navigate("/instructions")}
+          onClick={() => navigate("/information")}
           label="Information"
-          icon={<Icon icon="maki:information" width="20" height="20" />}
+          icon={<Icon icon="maki:information" width="30" height="30" />}
         />
         <BottomNavigationAction
           onClick={() => navigate("/instructions")}
           label="Instructions"
-          icon={<Icon icon="tabler:calendar-event" width="20" height="20" />}
+          icon={<Icon icon="tabler:calendar-event" width="30" height="30" />}
         />
         <BottomNavigationAction
           onClick={() => navigate("/profile")}
           label="Profile"
           icon={
-            <Icon icon="healthicons:person-outline" width="20" height="20" />
+            <Icon icon="healthicons:person-outline" width="30" height="30" />
           }
         />
       </BottomNavigation>

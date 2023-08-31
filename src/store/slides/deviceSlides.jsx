@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const deviceSlice = createSlice({
   name: "device",
   initialState: {
+    singleDeviceSelection: [],
     multipleDeviceSelection: [],
+    refresh: undefined,
   },
   reducers: {
     onAddMultipleDeviceSelection: (state, { payload }) => {
@@ -17,6 +19,12 @@ const deviceSlice = createSlice({
     onEditNumberInRowInMultipleDeviceType: (state, { payload }) => {
       state.multipleDeviceSelection = payload;
     },
+    onResetTable: (state) => {
+      state.multipleDeviceSelection = [];
+    },
+    onUpdateData: (state, { payload }) => {
+      state.refresh = payload;
+    },
   },
 });
 
@@ -25,7 +33,9 @@ const deviceSlice = createSlice({
 export const {
   onAddMultipleDeviceSelection,
   onRemoveDeviceFromMultipleDeviceType,
-  onEditNumberInRowInMultipleDeviceType
+  onEditNumberInRowInMultipleDeviceType,
+  onResetTable,
+  onUpdateData,
 } = deviceSlice.actions;
 
 export default deviceSlice.reducer;

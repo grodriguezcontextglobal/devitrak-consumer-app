@@ -10,13 +10,21 @@ const IndicatorProgressBottom = () => {
   const { multipleDeviceSelection } = useSelector(
     (state) => state.deviceHandler
   );
-  const { eventInfoDetail } = useSelector((state) => state.event)
-  const { deviceSetup } = useSelector((state) => state.event);
+  const { eventInfoDetail } = useSelector((state) => state.event);
   const sumOfDevicesNeeded = () => {
     let result = [];
-    const findValue = deviceSetup.map((device) => {});
-    return 0;
+    let index = 0;
+    for (let data of multipleDeviceSelection) {
+      result.splice(
+        index,
+        0,
+        parseInt(data.deviceNeeded) * parseInt(data.deviceValue)
+      );
+      index++;
+    }
+    return result.reduce((accumulator, current) => accumulator + current, 0);
   };
+  console.log(sumOfDevicesNeeded())
   const stepIndicator = () => {
     let current;
     switch (urlDetector) {

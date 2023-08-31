@@ -87,24 +87,16 @@ const TableMultipleDeviceType = () => {
   const { multipleDeviceSelection } = useSelector(
     (state) => state.deviceHandler
   );
-  const dataUpdated = useRef(multipleDeviceSelection)
-  useEffect(() => {
-    const controller = new AbortController();
-    dataUpdated.current = multipleDeviceSelection;
-
-    return () => {
-      controller.abort();
-    };
-  }, [multipleDeviceSelection.length]);
-
   const [dataSource, setDataSource] = useState(
-    dataUpdated.current.map(({ deviceType, deviceNeeded }, index) => {
-      return {
-        key: index,
-        deviceType,
-        deviceNeeded,
-      };
-    })
+    multipleDeviceSelection?.map(
+      ({ deviceType, deviceNeeded }, index) => {
+        return {
+          key: index,
+          deviceType,
+          deviceNeeded,
+        };
+      }
+    )
   );
   const dispatch = useDispatch();
   const handleDelete = (key) => {
