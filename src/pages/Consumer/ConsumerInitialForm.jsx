@@ -14,7 +14,6 @@ import * as yup from "yup";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import "./ConsumerInitialForm.css";
 import { useRef, useState } from "react";
-import IndicatorProgressBottom from "../../components/indicatorBottom/IndicatorProgressBottom";
 import { devitrackApi } from "../../devitrakApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

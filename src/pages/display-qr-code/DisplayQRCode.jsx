@@ -103,7 +103,7 @@ const DisplayQRCode = () => {
                 ? paymentIntentValueRef.current
                 : "https://devitrak.com"
             }
-            icon="../../assets/devitrak_logo.svg"
+            // icon="../../assets/devitrak_logo.svg"
           />
         </Grid>
         <Grid margin={"1rem auto"} item xs={12}>
