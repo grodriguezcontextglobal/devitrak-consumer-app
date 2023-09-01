@@ -16,7 +16,6 @@ const NavigationBottom = () => {
         right: 0,
         minHeight: "10dvh",
       }}
-      elevation={4}
     >
       <BottomNavigation
         showLabels

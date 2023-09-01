@@ -111,34 +111,6 @@ const Home = () => {
             Welcome to Devitrak App
           </Typography>
         </Grid>
-        <Grid
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"center"}
-          justifyContent={"center"}
-          item
-          xs={10}
-          margin={"2rem auto"}
-        >
-          {" "}
-          <Typography
-            color={"var(--gray-900, #101828)"}
-            textAlign={"center"}
-            /* Display xs/Semibold */
-            fontFamily={"Inter"}
-            fontSize={"18px"}
-            fontStyle={"normal"}
-            fontWeight={500}
-            lineHeight={"24px"}
-            style={{
-              textWrap: "balance",
-            }}
-          >
-            {!existingEvent
-              ? "Please wait while we take you to the main page of the event"
-              : "There is not event related to the url used"}
-          </Typography>
-        </Grid>
       </Grid>
     );
   }
