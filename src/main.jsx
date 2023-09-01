@@ -11,11 +11,10 @@ import { BrowserRouter } from 'react-router-dom';
 
 const queryClient = new QueryClient();
 const persistor = persistStore(store);
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter basename={import.meta.env.DEV ? '/' : '/devitrak-consumer-app/'}>
+      <BrowserRouter>
         <PersistGate persistor={persistor}>
             <QueryClientProvider client={queryClient}>
               <App />
