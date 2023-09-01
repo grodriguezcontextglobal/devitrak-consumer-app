@@ -28,10 +28,10 @@ const deviceSlice = createSlice({
       state.refresh = payload;
     },
     onAddNewOrder: (state, { payload }) => {
-      state.multipleDeviceSelection = payload
+      state.current = payload
     },
     onAddNewOrderToHistory: (state, { payload }) => {
-      state.multipleDeviceSelection.unshift(payload)
+      state.historyOrder.unshift(payload)
     },
   },
 });
