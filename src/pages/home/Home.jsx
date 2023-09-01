@@ -40,6 +40,7 @@ const Home = () => {
     eventUrl,
   ]);
   foundEventInfo();
+  console.log(foundEventInfo())
   const addEventInfoAndNavigate = () => {
     if (foundEventInfo()) {
       dispatch(onAddEventData(foundEventInfo()));
