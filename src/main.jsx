@@ -15,7 +15,7 @@ const persistor = persistStore(store);
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <React.StrictMode>
-      <BrowserRouter>
+      <BrowserRouter basename={import.meta.env.DEV ? '/' : '/devitrak-consumer-app/'}>
         <PersistGate persistor={persistor}>
             <QueryClientProvider client={queryClient}>
               <App />
