@@ -10,11 +10,14 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { onAddConsumerInfo } from "../../store/slides/consumerSlide";
-import "./Profile.css"
+import "./Profile.css";
+import { purgeStoredState } from "redux-persist";
+import { useNavigate } from "react-router-dom";
+import { persistor } from "../../store/store";
 const Profile = () => {
   const { consumer } = useSelector((state) => state.consumer);
   const [editSection, setEditSection] = useState(true);
-
+  const navigate = useNavigate();
   const { register, watch } = useForm({
     defaultValues: {
       name: consumer.name,
@@ -32,8 +35,13 @@ const Profile = () => {
       email: watch("email"),
       phoneNumber: watch("phoneNumber"),
     };
-    dispatch(onAddConsumerInfo(check))
+    dispatch(onAddConsumerInfo(check));
     setEditSection(true);
+  };
+
+  const handleLogout = async () => {
+    persistor.purge()
+    navigate("/");
   };
   return (
     <Grid container>
@@ -246,7 +254,7 @@ const Profile = () => {
           style={{
             borderRadius: "12px",
             margin: "0.1rem auto 1rem",
-            textOverflow:"ellipsis"
+            textOverflow: "ellipsis",
           }}
           endAdornment={
             <InputAdornment style={{ display: "flex", alignItems: "center" }}>
@@ -281,6 +289,42 @@ const Profile = () => {
           }
           fullWidth
         />
+      </Grid>
+      <Grid
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        margin={"0rem auto"}
+        item
+        xs={10}
+      >
+        <Button
+          style={{
+            display: "flex",
+            padding: "12px 20px",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "8px",
+            borderRadius: "8px",
+            border: "1px solid var(--blue-dark-600, #155EEF)",
+            // background: "var(--blue-dark-600, #155EEF)",
+            boxShadow: "0px 1px 2px 0px rgba(16, 24, 40, 0.05)",
+            width: "100%",
+          }}
+          onClick={() => handleLogout()}
+        >
+          <Typography
+            textTransform={"none"}
+            fontFamily={"Inter"}
+            fontSize={"18px"}
+            fontStyle={"normal"}
+            fontWeight={600}
+            lineHeight={"20px"}
+            color={"var(--blue-dark-600, #155EEF"}
+          >
+            Logout
+          </Typography>
+        </Button>
       </Grid>
     </Grid>
   );

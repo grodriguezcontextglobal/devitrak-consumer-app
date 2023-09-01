@@ -6,6 +6,8 @@ const deviceSlice = createSlice({
     singleDeviceSelection: [],
     multipleDeviceSelection: [],
     refresh: undefined,
+    historyOrder:[],
+    currentOrder: undefined
   },
   reducers: {
     onAddMultipleDeviceSelection: (state, { payload }) => {
@@ -25,6 +27,12 @@ const deviceSlice = createSlice({
     onUpdateData: (state, { payload }) => {
       state.refresh = payload;
     },
+    onAddNewOrder: (state, { payload }) => {
+      state.multipleDeviceSelection = payload
+    },
+    onAddNewOrderToHistory: (state, { payload }) => {
+      state.multipleDeviceSelection.unshift(payload)
+    },
   },
 });
 
@@ -36,6 +44,8 @@ export const {
   onEditNumberInRowInMultipleDeviceType,
   onResetTable,
   onUpdateData,
+  onAddNewOrder,
+  onAddNewOrderToHistory
 } = deviceSlice.actions;
 
 export default deviceSlice.reducer;

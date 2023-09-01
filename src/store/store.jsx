@@ -8,6 +8,7 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  persistStore,
 } from "redux-persist";
 import consumerSlide from "./slides/consumerSlide";
 import deviceSlides from "./slides/deviceSlides";
@@ -28,7 +29,7 @@ const reducers = combineReducers({
 
 const persistedReducers = persistReducer(persistConfig, reducers);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducers,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -37,3 +38,7 @@ export const store = configureStore({
       },
     }),
 });
+
+let persistor = persistStore(store)
+
+export { store, persistor }

@@ -116,6 +116,7 @@ const ConsumerInitialForm = () => {
           flexDirection={"column"}
           justifyContent={"center"}
           alignItems={"center"}
+          margin={'0 0 2rem'}
           gap={2}
           container
         >

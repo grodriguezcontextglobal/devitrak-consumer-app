@@ -11,13 +11,14 @@ import "./DeviceSelection.css";
 import { Select } from "antd";
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import { onAddMultipleDeviceSelection } from "../../store/slides/deviceSlides";
+import { onAddMultipleDeviceSelection, onAddNewOrder, onAddNewOrderToHistory } from "../../store/slides/deviceSlides";
 import TableMultipleDeviceType from "./TableMultipleDeviceType.jsx";
 import { useNavigate } from "react-router-dom";
 
 const MultipleSelection = () => {
   const { consumer } = useSelector((state) => state.consumer);
   const { deviceSetup, eventInfoDetail } = useSelector((state) => state.event);
+  const {multipleDeviceSelection} = useSelector((state) => state.deviceHandler)
   const [numberNeeded, setNumberNeeded] = useState(0);
   const [deviceTypeSelected, setDeviceTypeSelected] = useState(null);
   //   const [deviceOrder, setDeviceOrder] = useState([]);
@@ -51,12 +52,15 @@ const MultipleSelection = () => {
         deviceValue: deviceTypeSelected.deviceValue,
       })
     );
+     
     setNumberNeeded(0);
     setDeviceTypeSelected(null);
     return window.location.reload();
   };
   const submitDeviceSelectionInfo = (event) => {
     event?.preventDefault();
+    dispatch(onAddNewOrder(multipleDeviceSelection))
+    dispatch(onAddNewOrderToHistory(multipleDeviceSelection))
     if (!eventInfoDetail.merchant) {
       return navigate("/qr-code-generation");
     } else {

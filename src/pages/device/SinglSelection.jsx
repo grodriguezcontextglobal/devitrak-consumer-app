@@ -9,15 +9,13 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import "./DeviceSelection.css";
 import { useState } from "react";
-import { onAddMultipleDeviceSelection } from "../../store/slides/deviceSlides";
+import { onAddMultipleDeviceSelection, onAddNewOrder, onAddNewOrderToHistory } from "../../store/slides/deviceSlides";
 import { useNavigate } from "react-router-dom";
 
 const SingleSelection = () => {
   const { consumer } = useSelector((state) => state.consumer);
   const { deviceSetup, eventInfoDetail } = useSelector((state) => state.event);
   const [numberNeeded, setNumberNeeded] = useState(0);
-  const [deviceTypeSelected, setDeviceTypeSelected] = useState(null);
-  //   const [deviceOrder, setDeviceOrder] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const lessNumber = () => {
@@ -31,11 +29,21 @@ const SingleSelection = () => {
     event?.preventDefault();
     dispatch(
       onAddMultipleDeviceSelection({
-        deviceType: deviceSetup.deviceType,
+        deviceType: deviceSetup.at(-1).deviceType,
         deviceNeeded: numberNeeded,
-        deviceValue: deviceSetup.deviceValue,
+        deviceValue: deviceSetup.at(-1).deviceValue,
       })
     );
+    dispatch(onAddNewOrder({
+      deviceType: deviceSetup.at(-1).deviceType,
+      deviceNeeded: numberNeeded,
+      deviceValue: deviceSetup.at(-1).deviceValue,
+    }))
+    dispatch(onAddNewOrderToHistory({
+      deviceType: deviceSetup.at(-1).deviceType,
+      deviceNeeded: numberNeeded,
+      deviceValue: deviceSetup.at(-1).deviceValue,
+    }))
     if (!eventInfoDetail.merchant) {
       return navigate("/qr-code-generation");
     } else {

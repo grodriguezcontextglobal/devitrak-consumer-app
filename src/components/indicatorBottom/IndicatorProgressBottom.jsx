@@ -3,10 +3,10 @@ import { Progress } from "antd";
 import "./IndicatorProgressBottom.css";
 import "./BottomNavigation.css";
 import { useSelector } from "react-redux";
-
+import React, { useRef, useEffect } from "react";
 const IndicatorProgressBottom = () => {
   const urlDetector = window.location.pathname;
-
+  const currentRef = useRef()
   const { multipleDeviceSelection } = useSelector(
     (state) => state.deviceHandler
   );
@@ -24,24 +24,32 @@ const IndicatorProgressBottom = () => {
     }
     return result.reduce((accumulator, current) => accumulator + current, 0);
   };
-  console.log(sumOfDevicesNeeded())
   const stepIndicator = () => {
-    let current;
     switch (urlDetector) {
       case "/initial-form":
-        return (current = 25);
+        return currentRef.current=25;
       case "/device-selection":
-        return (current = 50);
+        return currentRef.current=50;
       case "/deposit":
-        return (current = 75);
+        return currentRef.current=75;
       case "/confirmation-process":
-        return (current = 100);
+        return currentRef.current=100;
     }
-    return current;
   };
 
+useEffect(() => {
+  const controller = new AbortController()
+  stepIndicator()
+  return () => {
+    controller.abort()
+  }
+}, [urlDetector])
+
+console.log(stepIndicator())
+console.log(urlDetector)
   return (
     <BottomNavigation
+      key={urlDetector}
       className="bottom-navigation"
       sx={{
         display: "flex",
@@ -92,7 +100,7 @@ const IndicatorProgressBottom = () => {
       )}
       <Progress
         steps={4}
-        percent={stepIndicator()}
+        percent={currentRef.current}
         showInfo={false}
         size={[85, 10]}
       />
